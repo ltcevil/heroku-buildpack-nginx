@@ -38,7 +38,7 @@ http {
 		keepalive_timeout 5;
 
 			location /2010739981:AAGeficThoCKvqAljbPT7k4w98x6B_VTt80 {
-       		        proxy_pass http://deeply-telegram.herokuapp.com:5000;
+       		        proxy_pass http://deeply-telegram.herokuapp.com:80;
 		        proxy_redirect     off;
         		proxy_set_header   Host $host;
 		        proxy_set_header   X-Real-IP $remote_addr;
