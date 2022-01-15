@@ -20,20 +20,29 @@ http {
 	access_log <%= ENV['NGINX_ACCESS_LOG_PATH'] || 'logs/nginx/access.log' %> l2met;
 	error_log <%= ENV['NGINX_ERROR_LOG_PATH'] || 'logs/nginx/error.log' %>;
 
-
 	include mime.types;
 	default_type application/octet-stream;
 	sendfile on;
 
 	# Must read the body in 5 seconds.
-	client_body_timeout <%= ENV['NGINX_CLIENT_BODY_TIMEOUT'] || 5 %>;
+	client_body_timeout 5;
+
+	upstream app_server {
+		server unix:/tmp/nginx.socket fail_timeout=0;
+	}
 
 	server {
 		listen <%= ENV["PORT"] %>;
-		server_name _;
+		server_name deeply-telegram.herokuapp.com;
 		keepalive_timeout 5;
-		client_max_body_size <%= ENV['NGINX_CLIENT_MAX_BODY_SIZE'] || 1 %>M;
 
-		root /app/public; # path to your app
+			location /2010739981:AAGeficThoCKvqAljbPT7k4w98x6B_VTt80 {
+       		        proxy_pass http://127.0.0.1:5000;
+		        proxy_redirect     off;
+        		proxy_set_header   Host $host;
+		        proxy_set_header   X-Real-IP $remote_addr;
+        		proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        		proxy_set_header   X-Forwarded-Host $server_name;
+		}
 	}
 }
