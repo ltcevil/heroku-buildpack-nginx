@@ -33,19 +33,16 @@ http {
 
 	server {
 		listen <%= ENV["PORT"] %>;
-		server_name _;
+		server_name deeply-telegram.herokuapp.com;
 		keepalive_timeout 5;
 
-		location / {
-			# Uncomment this if statement to force SSL/redirect http -> https
-			# if ($http_x_forwarded_proto != "https") {
-			#   return 301 https://$host$request_uri;
-			# }
-
-			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-			proxy_set_header Host $http_host;
-			proxy_redirect off;
-			proxy_pass http://app_server;
+			location /2010739981:AAGeficThoCKvqAljbPT7k4w98x6B_VTt80 {
+       		        proxy_pass http://127.0.0.1:5000;;
+		        proxy_redirect     off;
+        		proxy_set_header   Host $host;
+		        proxy_set_header   X-Real-IP $remote_addr;
+        		proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        		proxy_set_header   X-Forwarded-Host $server_name;
 		}
 	}
 }
