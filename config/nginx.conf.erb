@@ -41,7 +41,7 @@ http {
 		server_name deeply-telegram.herokuapp.com;
 		keepalive_timeout 5;
 
-			location /2010739981:AAGeficThoCKvqAljbPT7k4w98x6B_VTt80 {
+			location / {
 			set $upstream app_server;
 			proxy_ssl_name deeply-telegram.herokuapp.com;
        		        proxy_pass https://$upstream;
