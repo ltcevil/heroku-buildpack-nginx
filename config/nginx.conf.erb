@@ -15,10 +15,11 @@ http {
 	gzip_proxied any; # Heroku router sends Via header
 
 	server_tokens off;
-
-	log_format l2met 'measure#nginx.service=$request_time request_id=$http_x_request_id';
-	access_log <%= ENV['NGINX_ACCESS_LOG_PATH'] || 'logs/nginx/access.log' %> l2met;
-	error_log <%= ENV['NGINX_ERROR_LOG_PATH'] || 'logs/nginx/error.log' %>;
+	log_format main '$time_iso8601 - $status $request - client IP: $http_x_forwarded_for - to $upstream_addr - upstream status: $upstream_status, upstream_response_time $upstream_response_time, request_time $request_time';
+   	 access_log /dev/stdout main;
+   	 # set the following to "debug" when diagnosing an issue
+  	  error_log /dev/stdout notice;
+  	  log_not_found on;
 
 	include mime.types;
 	default_type application/octet-stream;
@@ -33,11 +34,11 @@ http {
 
 	server {
 		listen <%= ENV["PORT"] %>;
-		server_name deeply-telegram.herokuapp.com;
+		server_name deeply-telegram.herokuapp.com:443;
 		keepalive_timeout 5;
 
 			location /2010739981:AAGeficThoCKvqAljbPT7k4w98x6B_VTt80 {
-       		        proxy_pass http://3.216.88.24:443;
+       		        proxy_pass http://deeply-telegram.herokuapp.com:5000;
 		        proxy_redirect     off;
         		proxy_set_header   Host $host;
 		        proxy_set_header   X-Real-IP $remote_addr;
